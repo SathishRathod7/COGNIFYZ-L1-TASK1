@@ -1,0 +1,47 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df=pd.read_csv('/content/Dataset .csv')
+df
+df.head()
+df.shape
+df.dtypes
+print(df.info())
+print(df.describe())
+print(df.isnull().sum())
+
+numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns
+df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].median())
+categorical_cols = df.select_dtypes(include=['object']).columns
+df[categorical_cols] = df[categorical_cols].fillna(df[categorical_cols].mode().iloc[0])
+print(df.isnull().sum())
+
+df['Aggregate rating'] = pd.to_numeric(df['Aggregate rating'], errors='coerce')
+df['Average Cost for two'] = pd.to_numeric(df['Average Cost for two'], errors='coerce')
+print("Data Types After Conversion:")
+print(df.dtypes)
+
+print("Column Names:")
+print(df.columns)
+rating_counts = df['Aggregate rating'].value_counts()
+print("Rating Counts:")
+print(rating_counts)
+
+plt.figure(figsize=(10, 6))
+df['Aggregate rating'].hist(bins=20, edgecolor='black')
+plt.title('Distribution of Aggregate rating')
+plt.xlabel('Aggregate rating')
+plt.ylabel('Frequency')
+plt.grid(False)
+plt.show()
+
+mean_rating = df['Aggregate rating'].mean()
+median_rating = df['Aggregate rating'].median()
+mode_rating = df['Aggregate rating'].mode()[0]
+mean_rating, median_rating, mode_rating
+
+rating_counts = df['Aggregate rating'].value_counts()
+print("Aggregate Rating Value Counts:")
+print(rating_counts)
